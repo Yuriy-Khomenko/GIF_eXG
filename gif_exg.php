@@ -10,6 +10,7 @@
   - 1.00 basic functionality
   - 1.01 bag fix
   - 1.02 fast resize, overall optization and first release
+  - 1.03 bag fix (thanks for council of aAotD) 
  
  Author: Yurіy Khomenko
  Year of development: 2013
@@ -90,13 +91,11 @@ class GIF_eXG {
                     $sum+=$lc_i + 1;
                 }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
             } elseif ($this->gif[$this->pnt + 1] == "\xFF") {
-                $lc_i = ord($this->gif[$this->pnt + 14]);
                 $sum = 14;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$buffer_add.=$this->gtb($sum + 1);
             } elseif ($this->gif[$this->pnt + 1] == "\x01") {
-                $lc_i = ord($this->gif[$this->pnt + 15]);
                 $sum = 15;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
@@ -117,13 +116,11 @@ class GIF_eXG {
                     $this->dl_frms[] = $this->gif[$this->pnt + 5];
                     $gr_mod = $buffer_add = $this->gtb(8);
                 } elseif ($this->gif[$this->pnt + 1] == "\xFE") {
-                    $lc_i = ord($this->gif[$this->pnt + 2]);
                     $sum = 2;
                     while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                         $sum+=$lc_i + 1;
                     }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
                 } elseif ($this->gif[$this->pnt + 1] == "\xFF") {
-                    $lc_i = ord($this->gif[$this->pnt + 14]);
                     $sum = 14;
                     while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                         $sum+=$lc_i + 1;
@@ -136,7 +133,6 @@ class GIF_eXG {
                         $buffer_add.=$tmp_buf;
                     }
                 } elseif ($this->gif[$this->pnt + 1] == "\x01") {
-                    $lc_i = ord($this->gif[$this->pnt + 15]);
                     $sum = 15;
                     while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                         $sum+=$lc_i + 1;
@@ -161,7 +157,6 @@ class GIF_eXG {
         }$buffer_add = "";
         while ($this->gif[$this->pnt] != "\x3B") {
             if ($this->gif[$this->pnt + 1] == "\xFE") {
-                $lc_i = ord($this->gif[$this->pnt + 2]);
                 $sum = 2;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
@@ -170,13 +165,11 @@ class GIF_eXG {
                     $this->au = 1;
                 }
             } elseif ($this->gif[$this->pnt + 1] == "\xFF") {
-                $lc_i = ord($this->gif[$this->pnt + 14]);
                 $sum = 14;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$buffer_add.=$this->gtb($sum + 1);
             } elseif ($this->gif[$this->pnt + 1] == "\x01") {
-                $lc_i = ord($this->gif[$this->pnt + 15]);
                 $sum = 15;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
@@ -244,7 +237,7 @@ class GIF_eXG {
 
     private function rm_fld($str_img, $gr_i) {
         $hd = $offset = 13 + pow(2, (ord($str_img[10]) & 7) + 1) * 3;
-        $palet;
+        $palet="";
         $i_hd = 0;
         $m_off = 0;
         for ($i = 13; $i < $offset; $i++) {
