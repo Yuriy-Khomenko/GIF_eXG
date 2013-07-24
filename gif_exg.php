@@ -2,7 +2,7 @@
 /**********************************************************************************
 								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.03
+ Current version: 1.04 (current version)
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -10,7 +10,8 @@
   - 1.00 basic functionality
   - 1.01 bag fix
   - 1.02 fast resize, overall optization and first release
-  - 1.03 bag fix (thanks for council of aAotD) 
+  - 1.03 bag fix (thanks for council of aAotD)
+  - 1.04 small fix (support not standart file formats)  
  
  Author: Yurіy Khomenko
  Year of development: 2013
@@ -84,6 +85,7 @@ class GIF_eXG {
         if (($vt = ord($this->gl_mn[10])) & 128 ? 1 : 0) {
             $this->gl_palet = $this->gtb(pow(2, ($vt & 7) + 1) * 3);
         }$buffer_add;
+	if($this->gif[$this->pnt] == "\x21"){		
         while ($this->gif[$this->pnt + 1] != "\xF9") {
             if ($this->gif[$this->pnt + 1] == "\xFE") {
                 $sum = 2;
@@ -102,6 +104,7 @@ class GIF_eXG {
                 }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
             }
         }$this->gl_mod = $buffer_add;
+	}		
         while ($this->gif[$this->pnt] != "\x3B" && $this->gif[$this->pnt + 1] != "\xFE" && $this->gif[$this->pnt + 1] != "\xFF" && $this->gif[$this->pnt + 1] != "\x01") {
             $lc_mod;
             $lc_palet;
