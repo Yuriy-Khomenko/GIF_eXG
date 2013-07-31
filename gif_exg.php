@@ -2,7 +2,7 @@
 /**********************************************************************************
 								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.04 (current version)
+ Current version: 1.05
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -11,9 +11,10 @@
   - 1.01 bag fix
   - 1.02 fast resize, overall optization and first release
   - 1.03 bag fix (thanks for council of aAotD)
-  - 1.04 small fix (support not standart file formats)  
+  - 1.04 small fix (support not standart file formats)
+  - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)  
  
- Author: Yurіy Khomenko
+ Author: Yuriy Khomenko
  Year of development: 2013
  Country: Ukraine
  
@@ -86,24 +87,27 @@ class GIF_eXG {
             $this->gl_palet = $this->gtb(pow(2, ($vt & 7) + 1) * 3);
         }$buffer_add;
 	if($this->gif[$this->pnt] == "\x21"){		
-        while ($this->gif[$this->pnt + 1] != "\xF9") {
-            if ($this->gif[$this->pnt + 1] == "\xFE") {
+       while ($this->gif[$this->pnt + 1] != "\xF9" && $this->gif[$this->pnt] != "\x2C") {
+		switch ( $this->gif[$this->pnt + 1] ) {
+			case "\xFE":
                 $sum = 2;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
-            } elseif ($this->gif[$this->pnt + 1] == "\xFF") {
+				break;
+			case "\xFF":
                 $sum = 14;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$buffer_add.=$this->gtb($sum + 1);
-            } elseif ($this->gif[$this->pnt + 1] == "\x01") {
+				break;
+			case "\x01":
                 $sum = 15;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
-            }
-        }$this->gl_mod = $buffer_add;
+            
+        }}$this->gl_mod = $buffer_add;
 	}		
         while ($this->gif[$this->pnt] != "\x3B" && $this->gif[$this->pnt + 1] != "\xFE" && $this->gif[$this->pnt + 1] != "\xFF" && $this->gif[$this->pnt + 1] != "\x01") {
             $lc_mod;
@@ -113,17 +117,20 @@ class GIF_eXG {
             $gr_mod;
             $this->lp_frm++;
             while ($this->gif[$this->pnt] != "\x2C") {
-                if ($this->gif[$this->pnt + 1] == "\xF9") {
+			  switch ($this->gif[$this->pnt + 1]) {
+				case "\xF9":
                     $this->gn_fld[] = $this->gif[$this->pnt + 3];
                     $this->dl_frmf[] = $this->gif[$this->pnt + 4];
                     $this->dl_frms[] = $this->gif[$this->pnt + 5];
                     $gr_mod = $buffer_add = $this->gtb(8);
-                } elseif ($this->gif[$this->pnt + 1] == "\xFE") {
+					break;
+				case "\xFE":	
                     $sum = 2;
                     while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                         $sum+=$lc_i + 1;
                     }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
-                } elseif ($this->gif[$this->pnt + 1] == "\xFF") {
+					break;
+				case "\xFF":
                     $sum = 14;
                     while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                         $sum+=$lc_i + 1;
@@ -135,12 +142,13 @@ class GIF_eXG {
                     } else {
                         $buffer_add.=$tmp_buf;
                     }
-                } elseif ($this->gif[$this->pnt + 1] == "\x01") {
+					break;
+				case "\x01":
                     $sum = 15;
                     while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                         $sum+=$lc_i + 1;
                     }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
-                }
+              }
             }$lc_mod = $buffer_add;
             $pzs_xy[] = $this->ms_int(1, 2);
             $pzs_xy[] = $this->ms_int(3, 2);
@@ -159,7 +167,8 @@ class GIF_eXG {
             $this->ar_frm[] = new FRM($lc_mod, $lc_palet, $this->gtb($sum + 2), $head, $pzs_xy, $gr_mod);
         }$buffer_add = "";
         while ($this->gif[$this->pnt] != "\x3B") {
-            if ($this->gif[$this->pnt + 1] == "\xFE") {
+		  switch ($this->gif[$this->pnt + 1]){
+			case "\xFE":
                 $sum = 2;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
@@ -167,17 +176,19 @@ class GIF_eXG {
                 if ($sum == 17) {
                     $this->au = 1;
                 }
-            } elseif ($this->gif[$this->pnt + 1] == "\xFF") {
+				break;
+			case "\xFF":	
                 $sum = 14;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$buffer_add.=$this->gtb($sum + 1);
-            } elseif ($this->gif[$this->pnt + 1] == "\x01") {
+				break;
+			case "\x01":	
                 $sum = 15;
                 while (($lc_i = ord($this->gif[$this->pnt + $sum])) != 0x00) {
                     $sum+=$lc_i + 1;
                 }$opt ? $this->gtb($sum + 1) : $buffer_add.=$this->gtb($sum + 1);
-            }
+          }
         }$this->gl_mode = $buffer_add;
         $this->gif = "";
     }

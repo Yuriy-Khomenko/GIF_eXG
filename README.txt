@@ -1,6 +1,5 @@
-				PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.04 (current version)
+ Current version: 1.05
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -9,9 +8,10 @@
   - 1.01 bag fix
   - 1.02 fast resize, overall optization and first release
   - 1.03 bag fix (thanks for council of aAotD)
-  - 1.04 small fix (support not standart file formats)   
+  - 1.04 small fix (support not standart file formats)
+  - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)  
  
- Author: Yur³y Khomenko
+ Author: Yuriy Khomenko
  Year of development: 2013
  Country: Ukraine
  
@@ -47,4 +47,3 @@
  $nGif = new GIF_eXG("../image/src.gif",1);
  $nGif->resize("../image/dst1.gif",180,180,1,0);
  $nGif->resize("../image/dst2.gif",150,150,0,0);
- 
