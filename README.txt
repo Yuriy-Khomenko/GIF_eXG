@@ -1,5 +1,5 @@
  Name: GIF_eXG
- Current version: 1.05
+ Current version: 1.06
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -9,7 +9,8 @@
   - 1.02 fast resize, overall optization and first release
   - 1.03 bag fix (thanks for council of aAotD)
   - 1.04 small fix (support not standart file formats)
-  - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)  
+  - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)
+  - 1.06 correct handling files with error sizes of local frame   
  
  Author: Yuriy Khomenko
  Year of development: 2013

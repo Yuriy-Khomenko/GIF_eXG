@@ -2,7 +2,7 @@
 /**********************************************************************************
 								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.05
+ Current version: 1.06
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -12,7 +12,8 @@
   - 1.02 fast resize, overall optization and first release
   - 1.03 bag fix (thanks for council of aAotD)
   - 1.04 small fix (support not standart file formats)
-  - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)  
+  - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)
+  - 1.06 correct handling files with error sizes of local frame 
  
  Author: Yuriy Khomenko
  Year of development: 2013
@@ -154,9 +155,25 @@ class GIF_eXG {
             $pzs_xy[] = $this->ms_int(3, 2);
             $pzs_xy[] = $this->ms_int(5, 2);
             $pzs_xy[] = $this->ms_int(7, 2);
-            $lc_i = ord($this->gif[$this->pnt + 9]) & 128 ? 1 : 0;
             $head = $this->gtb(10);
-            if ($lc_i) {
+			if((($pzs_xy[0] + $pzs_xy[2])-$this->int_w)>0){
+				$head[1]= "\x00";
+				$head[2]= "\x00";
+				$head[5]= $this->int_raw($this->int_w);
+				$head[6]= "\x00";
+				
+				$pzs_xy[0]=0;
+				$pzs_xy[2]=$this->int_w;
+			}
+			if((($pzs_xy[1] + $pzs_xy[3])-$this->int_h)>0){
+				$head[3]= "\x00";
+				$head[4]= "\x00";
+				$head[7]= $this->int_raw($this->int_h);
+				$head[8]= "\x00";			
+				$pzs_xy[1]=0;
+				$pzs_xy[3]=$this->int_h;
+			}		
+            if ((ord($this->gif[$this->pnt - 1]) & 128 ? 1 : 0)) {
                 $lc_i = pow(2, (ord($this->gif[$this->pnt - 1]) & 7) + 1) * 3;
                 $lc_palet = $this->gtb($lc_i);
             }$sum = 0;
@@ -219,6 +236,7 @@ class GIF_eXG {
     }
 
     private function resize_img($b, $ind_f, $des) {
+	
         $n_width = round($this->ar_frm[$ind_f]->width_f * $des[0])? : 1;
         $n_height = round($this->ar_frm[$ind_f]->height_f * $des[1])? : 1;
         $n_pos_x = round($this->ar_frm[$ind_f]->pos_x * $des[0]);
@@ -226,10 +244,10 @@ class GIF_eXG {
         $this->ar_frm[$ind_f]->off_xy = $this->int_raw($n_pos_x) . $this->int_raw($n_pos_y);
         $str_img = @imagecreatefromstring($b);
         if ($this->lp_frm == 1 || $des[3]) {
-            $img_s = @imagecreatetruecolor($n_width, $n_height);
+            $img_s = @imagecreatetruecolor($n_width, $n_height); 
         } else {
             $img_s = @imagecreate($n_width, $n_height);
-        }if ($this->ar_frm[$ind_f]->tr_frm) {
+        }if ($this->ar_frm[$ind_f]->tr_frm) {			
             $in_trans = @imagecolortransparent($str_img);
             if ($in_trans >= 0 && $in_trans < @imagecolorstotal($img_s)) {
                 $tr_clr = @imagecolorsforindex($str_img, $in_trans);
@@ -246,6 +264,7 @@ class GIF_eXG {
         ob_end_clean();
         @imagedestroy($str_img);
         @imagedestroy($img_s);
+		
         return $t_img;
     }
 
