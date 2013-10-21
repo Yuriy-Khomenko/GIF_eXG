@@ -1,5 +1,6 @@
+								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.06
+ Current version: 1.07
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -10,15 +11,17 @@
   - 1.03 bag fix (thanks for council of aAotD)
   - 1.04 small fix (support not standart file formats)
   - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)
-  - 1.06 correct handling files with error sizes of local frame   
+  - 1.06 correct handling files with error sizes of local frame
+  - 1.07 correct resampled (on request MasterShredder)
  
  Author: Yuriy Khomenko
  Year of development: 2013
  Country: Ukraine
  
  Developed and test:
-  - PHP 5.3.13
-  - GD 2.0.34
+  - PHP 5.3.13/5.5.4
+  - GD 2.0.34/2.1.0
+  - OS Windows/Linux
   
  Attention and comment: 
   - class can be used for personal and commercial purposes
@@ -39,12 +42,12 @@
 		- $new_height: new image height
 		- $symmetry:  "1" - preserve symmetry
 				      "0" - not preserve symmetry
-		- $resampled: "1" - use resampled (not recommended, experimental), in rare cases, gives the best results
+		- $resampled: "1" - use resampled
  					  "0" - not use resampled
 						 
  Example:
  
  require_once "gif_exg.php";
  $nGif = new GIF_eXG("../image/src.gif",1);
- $nGif->resize("../image/dst1.gif",180,180,1,0);
- $nGif->resize("../image/dst2.gif",150,150,0,0);
+ $nGif->resize("../image/dst1.gif",180,180,1,1);
+ $nGif->resize("../image/dst2.gif",150,150,0,1);
