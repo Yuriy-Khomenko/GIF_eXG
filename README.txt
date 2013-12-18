@@ -1,6 +1,6 @@
 								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.07
+ Current version: 1.08
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -13,6 +13,7 @@
   - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)
   - 1.06 correct handling files with error sizes of local frame
   - 1.07 correct resampled (on request MasterShredder)
+  - 1.08 timing fix
  
  Author: Yuriy Khomenko
  Year of development: 2013

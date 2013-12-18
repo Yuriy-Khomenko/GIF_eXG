@@ -2,7 +2,7 @@
 /**********************************************************************************
 								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.07
+ Current version: 1.08
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -15,6 +15,7 @@
   - 1.05 fix (added: support new not standart file formats; optization code, thanks for council of AvrGavr)
   - 1.06 correct handling files with error sizes of local frame
   - 1.07 correct resampled (on request MasterShredder)
+  - 1.08 timing fix
  
  Author: Yuriy Khomenko
  Year of development: 2013
@@ -284,10 +285,12 @@ class GIF_eXG {
             }$str_img[$offset + $m_off + 2] = $this->gn_fld[$gr_i];
             $str_img[$offset + $m_off + 3] = $this->dl_frmf[$gr_i];
             $str_img[$offset + $m_off + 4] = $this->dl_frms[$gr_i];
-        }while ($str_img[$offset] != "\x2C") {
-            $offset++;
-            $i_hd++;
-        }$str_img[$offset + 1] = $this->ar_frm[$gr_i]->off_xy[0];
+        }
+		while($str_img[$offset] != "\x2C"){
+			$offset = $offset + $this->rl_int($str_img[$offset+2]) + 4;
+			$i_hd = $i_hd + $this->rl_int($str_img[$offset+2]) + 8;
+		}
+		$str_img[$offset + 1] = $this->ar_frm[$gr_i]->off_xy[0];
         $str_img[$offset + 2] = $this->ar_frm[$gr_i]->off_xy[1];
         $str_img[$offset + 3] = $this->ar_frm[$gr_i]->off_xy[2];
         $str_img[$offset + 4] = $this->ar_frm[$gr_i]->off_xy[3];
