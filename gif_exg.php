@@ -2,7 +2,7 @@
 /**********************************************************************************
 								PASSPORT OF CLASS
  Name: GIF_eXG
- Current version: 1.08
+ Current version: 1.081
  Appointment: resize gif image file with support animation and transparency
  Features: fast, stable and correct work with most files, ease of use
  
@@ -16,7 +16,8 @@
   - 1.06 correct handling files with error sizes of local frame
   - 1.07 correct resampled (on request MasterShredder)
   - 1.08 timing fix
- 
+  - 1.081 small code fix
+  
  Author: Yuriy Khomenko
  Year of development: 2013
  Country: Ukraine
@@ -89,7 +90,7 @@ class GIF_eXG {
         $this->int_h = $this->rl_int($this->gl_mn[8] . $this->gl_mn[9]);
         if (($vt = ord($this->gl_mn[10])) & 128 ? 1 : 0) {
             $this->gl_palet = $this->gtb(pow(2, ($vt & 7) + 1) * 3);
-        }$buffer_add;
+        }$buffer_add = "";
 	if($this->gif[$this->pnt] == "\x21"){		
        while ($this->gif[$this->pnt + 1] != "\xF9" && $this->gif[$this->pnt] != "\x2C") {
 		switch ( $this->gif[$this->pnt + 1] ) {
@@ -262,10 +263,10 @@ class GIF_eXG {
             }@imagecolortransparent($img_s, $n_trans);
             @imagefill($img_s, 0, 0, $n_trans);
         }@imagecopyresampled($img_s, $str_img, 0, 0, 0, 0, $n_width, $n_height, $this->ar_frm[$ind_f]->width_f, $this->ar_frm[$ind_f]->height_f);
-        ob_start();
+        @ob_start();
         @imagegif($img_s);
         $t_img = ob_get_clean();
-        ob_end_clean();
+        @ob_end_clean();
         @imagedestroy($str_img);
         @imagedestroy($img_s);
 		
@@ -309,7 +310,7 @@ class GIF_eXG {
             printf("ERROR: size height or width can not be equal to zero");
             return 0;
         }$des = Array(0, 0, 0);
-        $f_buf;
+        $f_buf = "";
         $con;
         $des[3] = $sm;
         $des[0] = $new_x / $this->int_w;
